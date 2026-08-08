@@ -10,6 +10,54 @@ button that shows you exactly which element it means.
 [![Tech](https://img.shields.io/badge/Tech-TypeScript-b5432a.svg)](#how-it-works)
 
 <!-- media:start -->
+
+<p align="center">
+  <img src="docs/media/logo.png" width="96" alt="Glasswing logo">
+</p>
+
+<h3 align="center">See what your page is doing to people who cannot see it.</h3>
+
+<p align="center">
+  <a href="docs/media/demo.mp4">
+    <img src="docs/media/demo-thumbnail.webp" width="640" alt="Watch the Glasswing demo">
+  </a>
+  <br>
+  <a href="docs/media/demo.mp4"><b>Watch the 30 second demo</b></a>
+</p>
+
+## Screenshots
+
+![Every problem, worst first.](docs/media/1-findings.webp)
+
+<sub>Every problem, worst first.</sub>
+
+<details>
+<summary><b>See 3 more</b></summary>
+
+### Why
+
+![Told why, not told a rule number.](docs/media/2-why.webp)
+
+<sub>Told why, not told a rule number.</sub>
+
+### Show
+
+![Show, and it outlines the element.](docs/media/3-show.webp)
+
+<sub>Show, and it outlines the element.</sub>
+
+### Local
+
+![Nothing leaves your machine.](docs/media/4-local.webp)
+
+<sub>Nothing leaves your machine.</sub>
+
+</details>
+
+<sub>Every screenshot is captured from the real extension running in Chrome, not
+mocked up, so they cannot drift from what the product actually does. Regenerate
+them with the tooling in the store-publishing workspace.</sub>
+
 <!-- media:end -->
 
 ## Why
