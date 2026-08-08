@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        background: #ffffff;
+        font-family: system-ui;
+        margin: 2rem;
+      }
+      .faint {
+        color: #b9b9b9;
+      }
+      .fine {
+        color: #1a1a1a;
+      }
+      .big {
+        color: #949494;
+        font-size: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>A page with known problems</h2>
+    <h4>Skipped a level to get here</h4>
+
+    <img src="cat.png" />
+    <img src="spacer.gif" alt="" />
+    <img src="dog.png" alt="A dog" />
+
+    <p class="faint">This grey is too light to read.</p>
+    <p class="fine">This one is fine.</p>
+    <p class="big">Large text at a ratio that passes for its size.</p>
+
+    <a href="/somewhere"><svg width="10" height="10"></svg></a>
+    <a href="/else">A perfectly good link</a>
+    <button><svg width="10" height="10"></svg></button>
+    <button aria-label="Close">x</button>
+
+    <input placeholder="Email" />
+    <label for="name">Name</label><input id="name" />
+
+    <p id="dupe">one</p>
+    <p id="dupe">two</p>
+  </body>
+</html>
