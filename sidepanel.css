@@ -1,0 +1,340 @@
+/* Glasswing
+ *
+ * A diagnostic tool, so the findings are the design and everything else gets
+ * out of their way. Near-neutral ground with one warm alert colour, because
+ * severity has to carry meaning here and a decorative accent competing with it
+ * would be actively harmful.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --paper: #f7f7f6;
+  --raised: #ffffff;
+  --ink: #191a18;
+  --ink-soft: #55574f;
+  --ink-faint: #8b8d85;
+  --rule: #e4e4e0;
+  --accent: #b5432a;
+  --accent-soft: #f7e7e2;
+  --danger: #b5432a;
+
+  --radius: 10px;
+
+  --sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  /* The verdict line is the one thing read as a sentence rather than scanned,
+     so it gets the serif and everything else stays in the UI face. */
+  --serif: ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141412;
+    --raised: #1c1c19;
+    --ink: #eae9e4;
+    --ink-soft: #b0afa6;
+    --ink-faint: #7f7f76;
+    --rule: #2b2b26;
+    --accent: #e8836a;
+    --accent-soft: #2a1c17;
+    --danger: #e8836a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.brand img {
+  border-radius: 6px;
+}
+
+/* Controls ---------------------------------------------------------------- */
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+button,
+select,
+input[type='search'] {
+  font: inherit;
+  color: inherit;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  background: var(--raised);
+  padding: 8px 10px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.primary {
+  width: 100%;
+  padding: 10px;
+  font-weight: 650;
+  color: var(--paper);
+  background: var(--accent);
+  border-color: transparent;
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Toast ------------------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translate(-50%, calc(100% + 32px));
+  max-width: calc(100% - 24px);
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 22%);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease,
+    visibility 0.22s;
+}
+
+.toast.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none;
+  }
+}
+
+/* Findings ----------------------------------------------------------------- */
+
+.summary {
+  border-top: 1px solid var(--rule);
+  padding-top: 10px;
+  margin-top: 2px;
+}
+
+.verdict {
+  margin: 0 0 9px;
+  font-family: var(--serif);
+  font-size: 16.5px;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Severity is carried by the label and the count, never by colour alone: a
+   chip reading "3 serious" still says so in greyscale. */
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.chip b {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.chip.serious {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--rule));
+  background: var(--accent-soft);
+}
+
+.scope {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.group {
+  margin-bottom: 10px;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.group-head:hover {
+  background: var(--accent-soft);
+}
+
+.group-title {
+  flex: 1;
+  min-width: 0;
+  font-weight: 620;
+}
+
+.group-count {
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.sev {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.sev.serious {
+  color: var(--danger);
+}
+
+.group-body {
+  border-top: 1px solid var(--rule);
+  padding: 10px 12px 12px;
+}
+
+.why {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.hit {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 55%, transparent);
+  font-size: 13px;
+}
+
+.hit:last-child {
+  border-bottom: none;
+}
+
+.hit-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.hit-msg {
+  color: var(--ink);
+}
+
+.hit-where {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.show-btn {
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink-soft);
+  border-radius: 7px;
+  padding: 3px 9px;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.show-btn:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.foot {
+  padding: 14px 12px 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.foot p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+  max-width: 40em;
+}
