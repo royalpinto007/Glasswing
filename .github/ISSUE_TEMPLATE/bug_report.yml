@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a problem.
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: A public URL where the problem happens is worth more than any description of it.
+      placeholder: 'https://...'
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem
+      options:
+        - Reported something that is not actually a problem (false positive)
+        - Missed something that is a problem (false negative)
+        - Wrong contrast number
+        - Show did not find the element
+        - The panel itself misbehaved
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened
+      description: For a wrong finding, paste the row Glasswing showed and the markup it points at.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: chrome
+    attributes:
+      label: Chrome version
+      placeholder: 'chrome://version'
+  - type: input
+    id: version
+    attributes:
+      label: Glasswing version
+      placeholder: 'chrome://extensions'

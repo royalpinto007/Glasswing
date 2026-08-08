@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest a check or a change.
+title: '[Feature]: '
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is hard right now
+      description: The problem you hit, not the solution you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you would like Glasswing to do
+    validations:
+      required: true
+  - type: textarea
+    id: rule
+    attributes:
+      label: If this is a new check
+      description: |
+        Every rule has to be safe to act on, so a new one needs three things:
+        what it detects, why it matters to a real person using the page, and
+        how it avoids reporting correct markup as broken.

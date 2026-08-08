@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Typecheck, test, build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run format:check
+      - run: npm run build
+
+      # The whole product claim is that Glasswing talks to nothing. A dependency
+      # bump or a stray import could quietly break that, and nothing else here
+      # would notice, so it is a build failure rather than a code review note.
+      - name: No network calls in the shipped bundles
+        run: |
+          if grep -rnE "fetch\(|XMLHttpRequest|new WebSocket|sendBeacon|EventSource" dist/; then
+            echo "::error::Glasswing must make no network requests, but the bundles contain one."
+            exit 1
+          fi
+          echo "no network calls found"
+
+      # Findings quote text and attributes from arbitrary pages, so every one
+      # of them is untrusted input. They are rendered with textContent, and
+      # innerHTML must not creep back in.
+      - name: No innerHTML in the source
+        run: |
+          if grep -rnE "innerHTML|outerHTML|insertAdjacentHTML" --include="*.ts" src/ ./*.ts; then
+            echo "::error::Use textContent. Page text is untrusted input."
+            exit 1
+          fi
+          echo "no innerHTML found"
+
+      # The extension asks for page access at the moment it is used and holds
+      # none by default. A standing host permission appearing in the manifest
+      # would change what the store listing has to say, so it fails the build.
+      - name: No standing host permissions
+        run: |
+          node --input-type=module -e "
+          import fs from 'node:fs';
+          const m = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+          if (m.host_permissions?.length) {
+            console.error('host_permissions must stay empty: ' + m.host_permissions.join(', '));
+            process.exit(1);
+          }
+          if (m.content_scripts?.length) {
+            console.error('content_scripts would run without being asked');
+            process.exit(1);
+          }
+          console.log('no standing page access');
+          "
+
+      - name: Manifest references files that exist
+        run: |
+          node --input-type=module -e "
+          import fs from 'node:fs';
+          const m = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+          const refs = [
+            ...Object.values(m.icons || {}),
+            m.background?.service_worker,
+            m.side_panel?.default_path,
+            m.action?.default_popup,
+          ].filter(Boolean);
+          const missing = refs.filter((r) => !fs.existsSync(r));
+          if (missing.length) { console.error('missing: ' + missing.join(', ')); process.exit(1); }
+          console.log(\`manifest ok, \${refs.length} referenced files present\`);
+          "
