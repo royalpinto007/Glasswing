@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="28" fill="#241713"/>
+  <!-- A lens over a stack of text lines, the lower ones dimmed: the thing the
+       tool looks for is text that is there but cannot be read. -->
+  <rect x="24" y="28" width="52" height="9" rx="4" fill="#f0e6e2"/>
+  <rect x="24" y="46" width="66" height="9" rx="4" fill="#a3736a"/>
+  <rect x="24" y="64" width="44" height="9" rx="4" fill="#5b3a34"/>
+  <circle cx="82" cy="84" r="24" fill="none" stroke="#e8836a" stroke-width="8"/>
+  <rect x="97" y="99" width="22" height="9" rx="4.5" fill="#e8836a" transform="rotate(45 97 99)"/>
+</svg>
