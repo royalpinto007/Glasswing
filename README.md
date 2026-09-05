@@ -117,6 +117,8 @@ Click the toolbar icon to open the panel, then **Check this page**. Or press
 
 Every finding has a **Show** button that scrolls to the element and outlines it
 in the page, so you never have to work out which of forty images the row means.
+Severity chips filter the list to serious, moderate or minor findings, and
+every row has a **Copy** button for its selector next to **Show**.
 
 ## Privacy
 

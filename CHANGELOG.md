@@ -5,6 +5,19 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.1.0] - 2026-09-06
+
+### Added
+
+- Redesigned side panel: status pill in the header and a summary card with the
+  verdict, clickable severity filter chips, and scope line.
+- Expand and collapse all findings, loading skeletons while a check runs, and
+  clean and pre-check empty states.
+- Copy-selector button beside every Show button, severity badges with count
+  pills on groups, and toast notifications.
+
 ## [1.0.0] - 2026-08-08
 
 First release.
