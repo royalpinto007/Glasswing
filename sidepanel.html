@@ -10,16 +10,40 @@
     <div id="app">
       <header class="bar">
         <div class="brand">
-          <img src="icons/icon-32.png" alt="" width="22" height="22" />
-          <span>Glasswing</span>
+          <span class="brand-icon"
+            ><img src="icons/icon-32.png" alt="" width="22" height="22"
+          /></span>
+          <span class="brand-name">Glasswing</span>
+          <span class="status-pill" id="status-pill" hidden></span>
         </div>
+        <button
+          id="expand-all"
+          class="icon-btn text"
+          type="button"
+          title="Expand or collapse all findings"
+          hidden
+        >
+          Expand
+        </button>
       </header>
 
       <div class="toolbar">
-        <button id="run-btn" class="primary">Check this page</button>
-        <div id="summary" class="summary" hidden>
+        <button id="run-btn" class="primary" type="button">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.6" />
+            <circle cx="8" cy="8" r="1.6" fill="currentColor" />
+            <path
+              d="M8 1.8v1.6M8 12.6v1.6M1.8 8h1.6M12.6 8h1.6"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span class="primary-label">Check this page</span>
+        </button>
+        <div id="summary" class="summary-card" hidden>
           <p id="verdict" class="verdict"></p>
-          <div class="chips" id="chips"></div>
+          <div class="chips" id="chips" role="group" aria-label="Filter by severity"></div>
           <p id="scope" class="scope"></p>
         </div>
       </div>
@@ -28,12 +52,15 @@
 
       <footer class="foot">
         <p>
+          <span aria-hidden="true">ℹ︎</span>
           Automatic checks catch roughly a third of real accessibility barriers. A clean result is a
           starting point, not a certificate.
         </p>
       </footer>
 
-      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <div id="toast" class="toast" role="status" aria-live="polite">
+        <span class="toast-dot" aria-hidden="true"></span><span id="toast-text"></span>
+      </div>
     </div>
     <script type="module" src="dist/sidepanel.js"></script>
   </body>
